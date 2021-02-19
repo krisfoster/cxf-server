@@ -23,6 +23,12 @@ profile:
 			-Dorg.graalvm.nativeimage.imagecode=agent \
 			-Djava.util.logging.config.file=./src/main/resources/logging.properties
 
+debug:
+	java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
+			-jar build/libs/server-0.0.1-SNAPSHOT.jar \
+			-Dorg.apache.cxf.JDKBugHacks.all=true \
+			-Djava.util.logging.config.file=./src/main/resources/logging.properties
+
 clean:
 	./gradlew clean
 
@@ -31,11 +37,11 @@ run:
 
 
 
-d-build:
+build-docker:
 	docker build \
 		--pull \
 		-f Dockerfile \
 		-t krisfoster/cxf:01 .
 
-d-run:
+run-docker:
 	docker run --rm -it -P krisfoster/cxf:01 /bin/bash
