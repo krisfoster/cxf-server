@@ -24,7 +24,8 @@ profile:
 			-Djava.util.logging.config.file=./src/main/resources/logging.properties
 
 debug:
-	java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
+	java \
+			-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5008 \
 			-jar build/libs/server-0.0.1-SNAPSHOT.jar \
 			-Dorg.apache.cxf.JDKBugHacks.all=true \
 			-Djava.util.logging.config.file=./src/main/resources/logging.properties

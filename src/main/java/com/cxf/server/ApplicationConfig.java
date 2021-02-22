@@ -1,6 +1,7 @@
 package com.cxf.server;
 
 import org.apache.cxf.Bus;
+import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,8 +38,19 @@ public class ApplicationConfig {
     // assumes the current class is called MyLogger
     private final static Logger LOGGER = Logger.getLogger(ApplicationConfig.class.getName());
 
-    @Autowired
-    private Bus bus;
+    //@Autowired
+    //private Bus bus;
+    @Bean
+    public Bus cxf(){
+        final Bus bus = new SpringBus();
+        bus.setExtension(new WrapperHelperClassLoader(bus), WrapperHelperCreator.class);
+        bus.setExtension(new ExtensionClassLoader(bus), ExtensionClassCreator.class);
+        bus.setExtension(new ExceptionClassLoader(bus), ExceptionClassCreator.class);
+        bus.setExtension(new WrapperClassLoader(bus), WrapperClassCreator.class);
+        bus.setExtension(new FactoryClassLoader(bus), FactoryClassCreator.class);
+        bus.setExtension(new GeneratedNamespaceClassLoader(bus), NamespaceClassCreator.class);
+        return bus;
+    }
 
     @Bean
     public Endpoint endpoint(Bus bus) {
@@ -52,12 +64,12 @@ public class ApplicationConfig {
         }
 
         LOGGER.log(Level.INFO, "ENDPOINT ENTRY");
-        bus.setExtension(new WrapperHelperClassLoader(bus), WrapperHelperCreator.class);
-        bus.setExtension(new ExtensionClassLoader(bus), ExtensionClassCreator.class);
-        bus.setExtension(new ExceptionClassLoader(bus), ExceptionClassCreator.class);
-        bus.setExtension(new WrapperClassLoader(bus), WrapperClassCreator.class);
-        bus.setExtension(new FactoryClassLoader(bus), FactoryClassCreator.class);
-        bus.setExtension(new GeneratedNamespaceClassLoader(bus), NamespaceClassCreator.class);
+        //bus.setExtension(new WrapperHelperClassLoader(bus), WrapperHelperCreator.class);
+        //bus.setExtension(new ExtensionClassLoader(bus), ExtensionClassCreator.class);
+        //bus.setExtension(new ExceptionClassLoader(bus), ExceptionClassCreator.class);
+        //bus.setExtension(new WrapperClassLoader(bus), WrapperClassCreator.class);
+        //bus.setExtension(new FactoryClassLoader(bus), FactoryClassCreator.class);
+        //bus.setExtension(new GeneratedNamespaceClassLoader(bus), NamespaceClassCreator.class);
 
         LOGGER.log(Level.INFO, "ENDPOINT Creating ednpoint object");
         EndpointImpl endpoint =
